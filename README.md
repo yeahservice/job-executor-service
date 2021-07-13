@@ -3,6 +3,38 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/keptn-sandbox/job-executor-service)
 [![Go Report Card](https://goreportcard.com/badge/github.com/keptn-sandbox/job-executor-service)](https://goreportcard.com/report/github.com/keptn-sandbox/job-executor-service)
 
+- [Job Executor Service](#job-executor-service)
+    - [Why?](#why)
+    - [How?](#how)
+        - [Specifying the working directory](#specifying-the-working-directory)
+        - [Event Matching](#event-matching)
+        - [Kubernetes Job](#kubernetes-job)
+        - [Kubernetes Job Environment Variables](#kubernetes-job-environment-variables)
+            - [From Events](#from-events)
+            - [From Kubernetes Secrets](#from-kubernetes-secrets)
+            - [From string literal](#from-string-literal)
+        - [File Handling](#file-handling)
+        - [Silent mode](#silent-mode)
+        - [Resource quotas for jobs](#resource-quotas-for-jobs)
+        - [Remote Control Plane](#remote-control-plane)
+    - [How to validate a job configuration](#how-to-validate-a-job-configuration)
+    - [Endless Possibilities](#endless-possibilities)
+    - [Credits](#credits)
+    - [Compatibility Matrix](#compatibility-matrix)
+    - [Installation](#installation)
+        - [Deploy in your Kubernetes cluster](#deploy-in-your-kubernetes-cluster)
+        - [Up- or Downgrading](#up--or-downgrading)
+        - [Uninstall](#uninstall)
+    - [Development](#development)
+        - [Common tasks](#common-tasks)
+        - [Testing Cloud Events](#testing-cloud-events)
+    - [Automation](#automation)
+        - [GitHub Actions: Automated Pull Request Review](#github-actions-automated-pull-request-review)
+        - [GitHub Actions: Unit Tests](#github-actions-unit-tests)
+        - [GH Actions/Workflow: Build Docker Images](#gh-actionsworkflow-build-docker-images)
+    - [How to release a new version of this service](#how-to-release-a-new-version-of-this-service)
+    - [License](#license)
+
 This Keptn service introduces a radical new approach to running tasks with keptn. It provides the means to run any
 container as a Kubernetes Job orchestrated by keptn.
 
@@ -63,11 +95,12 @@ actions:
 
 ### Specifying the working directory
 
-Since all files are hosted by default under `/keptn` and some tools only operate on the current
-working directory, it is also possible to switch the working directory of the container.
-This can be achieved by setting the `workingDirectory` property in a task object.
+Since all files are hosted by default under `/keptn` and some tools only operate on the current working directory, it is
+also possible to switch the working directory of the container. This can be achieved by setting the `workingDirectory`
+property in a task object.
 
 Here an example:
+
 ```yaml
 apiVersion: v2
 actions:
@@ -266,9 +299,8 @@ metadata:
 
 #### From string literal
 
-It sometimes makes sense to provide a static string value as an environment
-variable. This can be done by specifying a `string` as the `valueFrom` value.
-The value of the environment variable can then be specified by the `value`
+It sometimes makes sense to provide a static string value as an environment variable. This can be done by specifying
+a `string` as the `valueFrom` value. The value of the environment variable can then be specified by the `value`
 property.
 
 Here an example
@@ -402,6 +434,18 @@ would result in resource quotas for `cpu`, but in none for `memory`. If the `res
 If you are using the service in a remote control plane setup make sure the distributor is configured to forward all
 events used in the `job/config.yaml`. Just edit the `PUBSUB_TOPIC` environment variable in the distributor deployment
 configuration to fit your needs.
+
+## How to validate a job configuration
+
+`job-lint` is a simple cli tool that validates any given job configuration file and shows possible errors.
+
+```shell
+./job-lint test-data/config.yaml
+
+2021/07/13 16:18:49 config ../test-data/config.yaml is valid
+```
+
+For each release beginning with `0.1.3` compatible binaries are attached.
 
 ## Endless Possibilities
 
