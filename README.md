@@ -16,6 +16,7 @@
         - [File Handling](#file-handling)
         - [Silent mode](#silent-mode)
         - [Resource quotas for jobs](#resource-quotas-for-jobs)
+        - [Poll duration for jobs](#poll-duration-for-jobs)
         - [Remote Control Plane](#remote-control-plane)
     - [How to validate a job configuration](#how-to-validate-a-job-configuration)
     - [Endless Possibilities](#endless-possibilities)
@@ -429,6 +430,19 @@ tasks:
 would result in resource quotas for `cpu`, but in none for `memory`. If the `resources` block is present
 (even if empty), all default resource quotas are ignored for this task.
 
+### Poll duration for jobs
+
+The default settings allow a job to run for 5 min until the job executor service cancels the task execution. The default
+value can be overwritten for each task and is declared as seconds. The setting below would result in a poll duration of
+20 minutes for this specific task:
+
+```yaml
+tasks:
+  - name: "Run locust smoke tests"
+    ...
+    maxPollDuration: 1200
+```
+
 ### Remote Control Plane
 
 If you are using the service in a remote control plane setup make sure the distributor is configured to forward all
@@ -466,7 +480,7 @@ The credits of this service heavily go to @thschue and @yeahservice who original
 |     0.8.3     |                               keptnsandbox/job-executor-service:0.1.0                                |       -        |
 |     0.8.3     |                               keptnsandbox/job-executor-service:0.1.1                                |       -        |
 |     0.8.4     |                               keptnsandbox/job-executor-service:0.1.2                                |       v1       |
-|     0.8.4     |                               keptnsandbox/job-executor-service:0.1.3                                |       v2       |
+|     0.8.6     |                               keptnsandbox/job-executor-service:0.1.3                                |       v2       |
 
 ## Installation
 
